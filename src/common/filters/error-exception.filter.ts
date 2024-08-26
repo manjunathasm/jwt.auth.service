@@ -48,11 +48,11 @@ export class ErrorExceptionFilter implements ExceptionFilter {
       code = code || 'server_error';
       message = message || 'Bad Request Exception';
     } else {
-      status = HttpStatus.INTERNAL_SERVER_ERROR;
       code = code || 'server_error';
       message = message || 'Internal Server Error';
     }
 
+    status = status || HttpStatus.INTERNAL_SERVER_ERROR;
     error.code = `${code}`;
     error.message = `${[message].flat()}`;
 

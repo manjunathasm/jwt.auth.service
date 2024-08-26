@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { User } from './users.model';
 
 @Injectable()
 export class UsersService {
   private users: User[] = [];
+  private usernameIndex = new Set();
 
   async createUser(username: string, password: string): Promise<User> {
+    if (this.usernameIndex.has(username)) {
+      throw new HttpException('Username already exists', HttpStatus.CONFLICT);
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser: User = {
       id: Date.now(),
@@ -15,6 +19,7 @@ export class UsersService {
       lastLoggedIn: Date.now(),
     };
     this.users.push(newUser);
+    this.usernameIndex.add(username);
     return newUser;
   }
 

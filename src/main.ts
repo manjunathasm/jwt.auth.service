@@ -37,7 +37,9 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('apis', app, document);
+  SwaggerModule.setup('apis', app, document, {
+    jsonDocumentUrl: 'swagger/json',
+  });
 
   app.enableCors();
   app.disable('etag');
